@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="illustration_sun">Sun</string>
+    <string name="clouds_illustration">Clouds</string>
+    <string name="day_mountains_illustration">Day Mountains</string>
+    <string name="illustration_moon">Moon</string>
+    <string name="illustration_night_mountains">Night Mountains</string>
+    <string name="ic_location">Location Icon</string>
+    <string name="ic_weather_condition">Weather Icon</string>
+    <string name="ic_arrow_up">Arrow Up Icon</string>
+</resources>
