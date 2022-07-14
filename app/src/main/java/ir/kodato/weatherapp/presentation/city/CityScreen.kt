@@ -1,26 +1,18 @@
 package ir.kodato.weatherapp.presentation.city
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import android.util.Log
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import ir.kodato.weatherapp.presentation.city.component.CityItem
+import ir.kodato.weatherapp.presentation.city.component.CityContent
 import ir.kodato.weatherapp.presentation.destinations.CityScreenDestination
 import ir.kodato.weatherapp.presentation.destinations.WeatherScreenDestination
 import ir.kodato.weatherapp.ui.theme.Black
-import ir.kodato.weatherapp.ui.theme.DayStatusBar
-import ir.kodato.weatherapp.ui.theme.White
 
 @ExperimentalTextApi
 @ExperimentalMaterialApi
@@ -33,55 +25,30 @@ fun CityScreen(
 ) {
     val state = viewModel.state
 
-    if (changeCity) {
-        val systemUiController = rememberSystemUiController()
-        LaunchedEffect(key1 = true) {
-            systemUiController.setStatusBarColor(Black)
-        }
+    val systemUiController = rememberSystemUiController()
+    LaunchedEffect(key1 = true) {
+        systemUiController.setStatusBarColor(Black)
+    }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(White)
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                placeholder = { Text(text = "Search City") },
-                singleLine = true,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = Black,
-                    focusedBorderColor = Black,
-                    unfocusedBorderColor = Black.copy(alpha = ContentAlpha.disabled)
-                ),
-                value = state.search,
-                onValueChange = {
-                    viewModel.onEvent(CityEvent.EnteredCity(it))
-                    viewModel.onEvent(CityEvent.GetCity(it))
-                })
-
-            LazyColumn(contentPadding = PaddingValues(16.dp)) {
-                items(state.city) {
-                    CityItem(
-                        name = it.name,
-                        cityClicked = {
-                            viewModel.onEvent(CityEvent.SaveCity(it.name))
-                            navigator.navigate(WeatherScreenDestination) {
-                                popUpTo(CityScreenDestination.route) {
-                                    inclusive = true
-                                }
-                            }
-                        }
-                    )
+    if (state.isCityExist) {
+        if (changeCity) {
+            CityContent(
+                viewModel = viewModel,
+                state = state,
+                navigator = navigator
+            )
+        } else {
+            navigator.navigate(WeatherScreenDestination) {
+                popUpTo(CityScreenDestination.route) {
+                    inclusive = true
                 }
             }
         }
-    } else if (state.isCityExist) {
-        navigator.navigate(WeatherScreenDestination) {
-            popUpTo(CityScreenDestination.route) {
-                inclusive = true
-            }
-        }
+    } else {
+        CityContent(
+            viewModel = viewModel,
+            state = state,
+            navigator = navigator
+        )
     }
 }

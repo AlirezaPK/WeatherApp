@@ -102,7 +102,6 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.0.0-rc02"
 
     // Compose Nav Destinations
-    //implementation 'io.github.raamcosta.compose-destinations:animations-core:1.6.12-beta'
     implementation 'io.github.raamcosta.compose-destinations:core:1.6.12-beta'
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.6.12-beta'
 
