@@ -47,4 +47,16 @@ object AppModule {
     ): CityDataStore {
         return CityDataStoreImpl(context = context)
     }
+
+    @Provides
+    @Singleton
+    fun provideWeatherRepository(api: WeatherApi): WeatherRepository {
+        return WeatherRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCityRepository(api: WeatherApi, dataStore: CityDataStore): CityRepository {
+        return CityRepositoryImpl(api, dataStore)
+    }
 }
